@@ -1,0 +1,6 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+.ENV
+node_modules/
+.idea/
