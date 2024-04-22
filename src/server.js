@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const cors = requite('cors');
+const cors = require('cors');
 require('dotenv').config();
 
 
@@ -11,8 +11,8 @@ const expressApp = express();
 expressApp.use(cors());
 expressApp.use(express.json());
 
-// Routes
-expressApp.use('/auth', require('./routes/rest/authRoute'));
+// REST Routes
+expressApp.use('/auth', require('./routes/rest/authRoutes'));
 
 // Instance of server using express application
 const restServer = http.createServer(expressApp);

@@ -1,4 +1,5 @@
 const socketIO = require('socket.io');
+const messageRoutes = require('./routes/websocket/messageRoutes');
 
 module.exports = (server) => {
     const io = socketIO(server, {
@@ -18,11 +19,8 @@ module.exports = (server) => {
             socket.join(roomId);
         })
 
-        socket.on('send-message', (roomId, message) => {
-            // console.log(`Received message: ${message}`);
-            io.to(roomId).emit('message-received', message);
-        });
-
+        // Websocket Routes
+        messageRoutes.postMessage(io, socket);
     });
 
     return io;
