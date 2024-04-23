@@ -12,10 +12,10 @@ exports.signup = async (req, res) => {
     } catch (error) {
         if (error.statusCode != null) {
             res.status(error.statusCode).json({ message: error.message });
-            console.error(error.name, error.message);
+            // console.error(error.name, error.message);
         } else {
             res.status(500).send('Internal Error');
-            console.error('Internal Error', error.message)
+            // console.error('Internal Error', error.message)
         }
     }
 }
