@@ -1,0 +1,19 @@
+const jwt = require('jsonwebtoken');
+
+exports.generateAuthToken = (userId) => {
+    try {
+        const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return token;
+    } catch (error) {
+        throw error;
+    }
+}
+
+exports.validateAuthToken = (token) => {
+    try {
+        const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
+        return tokenDecoded.userId;
+    } catch (error) {
+        throw error;
+    }
+};

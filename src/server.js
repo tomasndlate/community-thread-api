@@ -2,7 +2,8 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 require('dotenv').config();
-
+const mongodbConfig = require('./configs/mongodbConfig');
+const passportConfig = require('./configs/passportConfig');
 
 // Instance of express application
 const expressApp = express();
@@ -10,9 +11,15 @@ const expressApp = express();
 // Configuration
 expressApp.use(cors());
 expressApp.use(express.json());
+mongodbConfig.connect();
+passportConfig.initialize();
 
 // REST Routes
 expressApp.use('/auth', require('./routes/rest/authRoutes'));
+
+expressApp.post('/test', require('./configs/passportConfig').authenticate('jwt', { session: false }), (req, res) => {
+    res.status(201).json({"a": "b"})
+})
 
 // Instance of server using express application
 const restServer = http.createServer(expressApp);
