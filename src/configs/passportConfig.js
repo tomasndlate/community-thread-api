@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('../models/User');
 const { comparePassword } = require('../utils/passwordUtils');
+const AuthenticationError = require('../errors/AuthenticationError');
 
 passport.use(new LocalStrategy({
     // Passport expect username and passport from json
@@ -13,14 +14,18 @@ passport.use(new LocalStrategy({
     }, async (username, password, done) => {
     try {
         const user = await User.findOne({ username });
-        const isValidPassword = await comparePassword(password, user.password);
+        if(!user)
+            throw new AuthenticationError('Invalid username or password');
 
-        user && isValidPassword
-        ? done(null, user)
-        : done(null, false, {message: 'Invalid username or password'});
+        const isValidPassword = await comparePassword(password, user.password);
+        if(!isValidPassword)
+            throw new AuthenticationError('Invalid username or password');
+
+        done(null, user)
         
     } catch (error) {
-        done(error)
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        done(error, false, {status: error.statusCode, message: error.message});
     }
 }));
 

@@ -17,11 +17,11 @@ exports.signup = async (req, res) => {
 }
 
 exports.login = (req, res) => {
-    console.log(req.user);
-    console.log(req.body)
     try {
-        res.status(201).json('Success');
+        const accessToken = authTokenUtils.generateAuthToken(req.user._id);
+        sendJsonResponse(res, HttpStatus.OK, {accessToken: accessToken})
     } catch (error) {
-        res.status(500).send('Error creating user');
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
     }
 }
