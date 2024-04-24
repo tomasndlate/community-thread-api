@@ -4,7 +4,6 @@ const AuthenticationError = require('../errors/AuthenticationError');
 const DatabaseError = require('../errors/DatabaseError');
 
 exports.createUser = async (username, password) => {
-    // HANDLE USER NOT FOUND | INVALID PASSWORD | AUTH ERROR
     try {
         const encryptedPassword = await encryptPassword(password);
         const newUser = new User({
@@ -12,7 +11,6 @@ exports.createUser = async (username, password) => {
             password: encryptedPassword
         });
         const createdNewUser = await newUser.save();
-        
         return createdNewUser._id;
 
     } catch (error) {

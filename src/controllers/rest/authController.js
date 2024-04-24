@@ -1,22 +1,18 @@
 const authService = require('../../services/authService');
 const authTokenUtils = require('../../utils/authTokenUtils');
+const ServerError = require('../../errors/ServerError');
+const { sendErrorResponse, sendJsonResponse } = require('../../utils/responseUtils');
+const HttpStatus = require('../../enums/httpStatusEnum');
 
 exports.signup = async (req, res) => {
     try {
         const { username, password } = req.body;
         const userId = await authService.createUser(username, password);
         const accessToken = authTokenUtils.generateAuthToken(userId);
-        
-        res.status(200).json({accessToken: accessToken});
-
+        sendJsonResponse(res, HttpStatus.CREATED, {accessToken: accessToken})
     } catch (error) {
-        if (error.statusCode != null) {
-            res.status(error.statusCode).json({ message: error.message });
-            // console.error(error.name, error.message);
-        } else {
-            res.status(500).send('Internal Error');
-            // console.error('Internal Error', error.message)
-        }
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
     }
 }
 
