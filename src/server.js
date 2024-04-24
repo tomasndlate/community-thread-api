@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const mongodbConfig = require('./configs/mongodbConfig');
 const passportConfig = require('./configs/passportConfig');
+const { logger, expressLogger } = require('./configs/winstonConfig');
 
 // Instance of express application
 const expressApp = express();
@@ -11,6 +12,7 @@ const expressApp = express();
 // Configuration
 expressApp.use(cors());
 expressApp.use(express.json());
+expressApp.use(expressLogger);
 mongodbConfig.connect();
 passportConfig.initialize();
 
@@ -29,5 +31,5 @@ const websocketServer = require('./websocketServer');
 websocketServer(restServer);
 const port = process.env.API_PORT;
 restServer.listen(port, () => {
-    console.log(`Express Server running on http://localhost:${port}`)
+    logger.info(`Express Server running on http://localhost:${port}`);
 })

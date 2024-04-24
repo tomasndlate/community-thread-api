@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
+const {logger} = require('../configs/winstonConfig');
 
-exports.connect = () => {
-    // Connect to MongoDB
-    const url_db = process.env.DB_URL
-    mongoose.connect(url_db, { useNewUrlParser: true, useUnifiedTopology: true });
+exports.connect = async () => {
+    try {
+        await mongoose.connect(process.env.DB_URL, { 
+            useNewUrlParser: true, 
+            useUnifiedTopology: true 
+        });
+        logger.info('Connected to MongoDB');
 
-    // Check the connection
-    const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-    db.once('open', () => {
-    console.log('Connected to MongoDB');
-    });
+    } catch (error) {
+        logger.error('MongoDB connection error:', error);
+    }
 }

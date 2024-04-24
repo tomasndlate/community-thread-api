@@ -1,8 +1,10 @@
+const httpStatus = require('../enums/httpStatusEnum');
+
 class AuthenticationError extends Error {
     constructor(message) {
         super(message);
-        this.name = 'AuthenticationError';
-        this.statusCode = 401; // Unauthorized
+        this.name = 'Authentication Error';
+        this.statusCode = httpStatus.UNAUTHORIZED;
     }
 }
 

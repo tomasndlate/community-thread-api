@@ -1,11 +1,11 @@
 const httpStatus = require('../enums/httpStatusEnum');
 
-class DatabaseError extends Error {
+class ServerError extends Error {
     constructor(message) {
         super(message);
-        this.name = 'Database Error';
+        this.name = 'Server Error';
         this.statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     }
 }
 
-module.exports = DatabaseError;
+module.exports = ServerError;
