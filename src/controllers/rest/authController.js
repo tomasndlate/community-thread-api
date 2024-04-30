@@ -6,8 +6,13 @@ const HttpStatus = require('../../enums/httpStatusEnum');
 
 exports.signup = async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const userId = await authService.createUser(username, password);
+        console.log(req.body)
+        const email = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
+        const name = req.body.name;
+
+        const userId = await authService.createUser(email, username, password, name);
         const accessToken = authTokenUtils.generateAuthToken(userId);
         sendJsonResponse(res, HttpStatus.CREATED, {accessToken: accessToken})
     } catch (error) {
