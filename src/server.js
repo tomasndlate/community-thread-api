@@ -19,6 +19,7 @@ passportConfig.initialize();
 // REST Routes
 expressApp.use('/auth', require('./routes/rest/authRoutes'));
 expressApp.use('/profile', require('./routes/rest/profileRoutes'));
+expressApp.use('/communities', require('./routes/rest/communitiesRoutes'));
 
 expressApp.post('/test', require('./configs/passportConfig').authenticate('jwt', { session: false }), (req, res) => {
     res.status(201).json({"a": "b"})
