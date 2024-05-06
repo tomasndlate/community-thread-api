@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const BadRequestError = require('../errors/BadRequestError');
+const User = require('./User');
+const DatabaseError = require('../errors/DatabaseError');
 
 const communitySchema = new mongoose.Schema({
     owner: {
@@ -27,6 +30,23 @@ const communitySchema = new mongoose.Schema({
         default: Date.now,
     },
 });
+
+communitySchema.pre("save", async function (next) {
+    try {
+        if(this.members.length === 0)
+            next();
+        
+        const isMembersValid = await User.countDocuments({ _id: { $in: this.members } }) === this.members.length ? true : false;
+        if (!isMembersValid)
+            throw new BadRequestError('Not all members are valid');
+
+        next();
+
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        next(error);
+    }
+})
 
 const Community = mongoose.model('Community', communitySchema);
 

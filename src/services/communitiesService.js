@@ -14,7 +14,6 @@ exports.create = async (owner, name, description, members) => {
             description: description, 
             members: members
         });
-        console.log(newCommunity)
         const createdNewCommunity = await newCommunity.save();
         return createdNewCommunity;
 
@@ -24,6 +23,7 @@ exports.create = async (owner, name, description, members) => {
             throw new BadRequestError('Name already exists.');
         }
         // Default error
-        throw new DatabaseError('Database error.');
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
     }
 };
