@@ -6,7 +6,6 @@ const HttpStatus = require('../../enums/httpStatusEnum');
 
 exports.signup = async (req, res) => {
     try {
-        console.log(req.body)
         const email = req.body.email;
         const username = req.body.username;
         const password = req.body.password;
