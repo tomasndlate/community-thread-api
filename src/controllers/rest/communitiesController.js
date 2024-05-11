@@ -17,7 +17,7 @@ exports.createCommunity = async (req, res) => {
         if (!name)
             throw new BadRequestError('Invalid name')
 
-        const community = await communities.create(ownerId, name, description, membersId);
+        const community = await communitiesService.create(ownerId, name, description, membersId);
 
         sendJsonResponse(res, HttpStatus.CREATED, community);
     } catch (error) {
@@ -58,6 +58,21 @@ exports.getCommunity = async (req, res) => {
 
         sendJsonResponse(res, HttpStatus.OK, communityResult);
 
+    } catch (error) {
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
+    }
+}
+
+exports.putCommunityMembers = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { community } = req.params;
+        const members = req.body.members;
+
+        const updatedCommunity = await communitiesService.addMembers(userId, community, members);
+
+        sendJsonResponse(res, HttpStatus.OK, updatedCommunity);
     } catch (error) {
         error = !error.statusCode ? new ServerError('Internal error.') : error;
         sendErrorResponse(res, error.statusCode, error.message);
