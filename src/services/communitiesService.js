@@ -72,6 +72,9 @@ exports.addMembers = async (userId, communityName, membersUsername) => {
 
         console.log(membersIds);
         const community = await Community.findOne({ name: communityName });
+
+        if (!community)
+            throw new BadRequestError('Bad Request: Community not found')
         
         if (community.owner.toString() != userId.toString())
             throw new AuthorizationError('Unathorized: User is not the community owner');
