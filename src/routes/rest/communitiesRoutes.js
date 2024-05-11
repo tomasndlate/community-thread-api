@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/authMiddleware');
-const { createCommunity, getCommunities, getCommunity, putCommunityMembers, putJoinCommunity } = require('../../controllers/rest/communitiesController');
+const { createCommunity, getCommunities, getCommunity, putCommunityMembers, putJoinCommunity, getCommunityMembers } = require('../../controllers/rest/communitiesController');
 
 // Create community
 router.post('/', authMiddleware, createCommunity);
@@ -15,6 +15,9 @@ router.get('/:community', getCommunity);
 
 // Add members to a community
 router.put('/:community/members', authMiddleware, putCommunityMembers);
+
+// Get community members
+router.get('/:community/members', getCommunityMembers);
 
 // Join a community
 router.put('/:community/join', authMiddleware, putJoinCommunity);
