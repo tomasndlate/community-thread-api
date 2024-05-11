@@ -27,3 +27,19 @@ exports.create = async (owner, name, description, members) => {
         throw error;
     }
 };
+
+exports.find = async (name, page, limit) => {
+    try {
+        
+        const filterByName = name != '*' 
+                ? { name: { $regex: new RegExp(name, 'i') } } 
+                : {};
+        
+        const communities = await Community.find(filterByName).skip((page - 1) * limit).limit(limit);
+
+        return communities;
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
+    }
+}
