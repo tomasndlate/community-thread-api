@@ -17,6 +17,6 @@ router.get('/:community', getCommunity);
 router.put('/:community/members', authMiddleware, putCommunityMembers);
 
 // Join a community
-router.put('/:community/join', authMiddleware, putJoinCommunity)
+router.put('/:community/join', authMiddleware, putJoinCommunity);
 
 module.exports = router;
