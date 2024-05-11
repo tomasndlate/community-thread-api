@@ -4,6 +4,7 @@ const Community = require('../models/Community');
 // const AuthenticationError = require('../errors/AuthenticationError');
 const DatabaseError = require('../errors/DatabaseError');
 const BadRequestError = require('../errors/BadRequestError');
+const NotFoundError = require('../errors/NotFoundError');
 
 exports.create = async (owner, name, description, members) => {
     try {
@@ -38,6 +39,22 @@ exports.find = async (name, page, limit) => {
         const communities = await Community.find(filterByName).skip((page - 1) * limit).limit(limit);
 
         return communities;
+        
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
+    }
+}
+
+exports.getByName = async (name) => {
+    try {
+        const community = await Community.findOne({name: name});
+
+        if (!community)
+            throw new NotFoundError('Community Not Found');
+
+        return community;
+
     } catch (error) {
         error = !error.statusCode ? new DatabaseError('Database error.') : error;
         throw error;
