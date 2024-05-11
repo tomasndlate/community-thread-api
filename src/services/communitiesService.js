@@ -118,6 +118,21 @@ exports.addMember = async (userId, communityName) => {
     
 }
 
+exports.getMembers = async (communityName) => {
+    try {
+        const communityMembers = await Community.findOne({ name: communityName }).select({ _id: 0, members: 1 });
+
+        if (!communityMembers)
+            throw new NotFoundError('Not Found');
+
+        return communityMembers;
+
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
+    }
+}
+
 /**
  * Validate if users exist by their username and return array of ids.
  * @param {string[]} usernames Arrays of users id
