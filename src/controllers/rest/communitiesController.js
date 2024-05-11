@@ -49,3 +49,17 @@ exports.getCommunities = async (req, res) => {
         sendErrorResponse(res, error.statusCode, error.message);
     }
 }
+
+exports.getCommunity = async (req, res) => {
+    try {
+        const { community } = req.params;
+
+        const communityResult = await communitiesService.getByName(community);
+
+        sendJsonResponse(res, HttpStatus.OK, communityResult);
+
+    } catch (error) {
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
+    }
+}
