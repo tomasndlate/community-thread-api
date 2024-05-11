@@ -70,11 +70,10 @@ exports.addMembers = async (userId, communityName, membersUsername) => {
         if (!membersIds)
             throw new BadRequestError('Bad Request: Not all usernames are correct')
 
-        console.log(membersIds);
         const community = await Community.findOne({ name: communityName });
 
         if (!community)
-            throw new BadRequestError('Bad Request: Community not found')
+            throw new BadRequestError('Bad Request: Community not found');
         
         if (community.owner.toString() != userId.toString())
             throw new AuthorizationError('Unathorized: User is not the community owner');
@@ -83,8 +82,6 @@ exports.addMembers = async (userId, communityName, membersUsername) => {
             { _id: community._id },
             { $addToSet: { members: { $each: membersIds } } }
         );
-
-        console.log(updatedResult.ok)
         
         if (updatedResult.ok === 0)
             throw new DatabaseError('Database error.');
@@ -95,6 +92,30 @@ exports.addMembers = async (userId, communityName, membersUsername) => {
         error = !error.statusCode ? new DatabaseError('Database error.') : error;
         throw error;
     }
+}
+
+exports.addMember = async (userId, communityName) => {
+    try {
+        const community = await Community.findOne({ name: communityName });
+
+        if (!community)
+            throw new BadRequestError('Bad Request: Community not found');
+        
+        const updatedResult = await Community.updateOne(
+            { _id: community._id },
+            { $addToSet: { members: userId } }
+        );
+
+        if (updatedResult.ok === 0)
+            throw new DatabaseError('Database error.');
+
+        return await Community.findOne({name: communityName});
+
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
+    }
+    
 }
 
 /**
