@@ -21,6 +21,10 @@ const communitySchema = new mongoose.Schema({
         required: false,
     },
     //    "roles": ["roleId"(string)]
+    threads: [{
+        type: String,
+        ref: 'Thread'
+    }],
     members: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
