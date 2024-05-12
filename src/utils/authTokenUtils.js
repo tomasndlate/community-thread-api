@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const AuthenticationError = require('../errors/AuthenticationError');
 
 exports.generateAuthToken = (userId) => {
     try {
@@ -14,6 +15,6 @@ exports.validateAuthToken = (token) => {
         const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
         return tokenDecoded.userId;
     } catch (error) {
-        throw error;
+        throw new AuthenticationError('Invalid token');
     }
 };

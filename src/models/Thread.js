@@ -29,11 +29,13 @@ threadSchema.index({ nameId: 1, community: 1 }, { unique: true });
 
 threadSchema.pre('save', async function (next) {
     try {
-        const existingThread = await this.constructor.findOne({ nameId: this.nameId, community: this.community });
+        if (this.isNew) {
+            const existingThread = await this.constructor.findOne({ nameId: this.nameId, community: this.community });
         
-        if (!!existingThread)
-            throw new BadRequestError('Thread already exists');
-
+            if (!!existingThread)
+                throw new BadRequestError('Thread already exists');
+        }
+        
         next();
 
     } catch (error) {

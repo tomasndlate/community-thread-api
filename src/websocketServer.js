@@ -1,5 +1,6 @@
 const socketIO = require('socket.io');
-const messageRoutes = require('./routes/websocket/messageRoutes');
+const {threadSocket} = require('./routes/websocket/thread.socket');
+const { messageSocket } = require('./routes/websocket/message.socket');
 
 module.exports = (server) => {
     const io = socketIO(server, {
@@ -9,18 +10,14 @@ module.exports = (server) => {
     // New websocket connection
     io.on('connection', (socket) => {
         console.log('User connected!');
-
         // Disconnect
         socket.on('disconnect', () => {
             console.log('User disconnected!');
         });
 
-        socket.on('join-room', (roomId) => {
-            socket.join(roomId);
-        })
-
         // Websocket Routes
-        messageRoutes.postMessage(io, socket);
+        threadSocket(io, socket);
+        messageSocket(io, socket);
     });
 
     return io;
