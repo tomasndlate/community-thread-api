@@ -111,8 +111,20 @@ exports.putJoinCommunity = async (req, res) => {
 exports.getCommunityThreads = async (req, res) => {
     try {
         const { community } = req.params;
+        const { name = '*', page = 1, limit = 20 } = req.query;
+        
+        // TODO: Handle the name parameter for not allowed digits
+        const filterName = name;
+        const filterPage = parseInt(page);
+        const filterLimit = parseInt(limit);
 
-        const communityThreads = await communitiesService.getThreads(community);
+        if (isNaN(filterPage) || filterPage < 1)
+            throw new BadRequestError('Invalid page number');
+        
+        if (isNaN(filterLimit) || filterLimit < 1)
+            throw new BadRequestError('Invalid page size');
+
+        const communityThreads = await communitiesService.getThreads(community, filterName, filterPage, filterLimit);
 
         sendJsonResponse(res, HttpStatus.OK, communityThreads);
     } catch (error) {

@@ -143,9 +143,20 @@ exports.getMembers = async (communityName) => {
     }
 }
 
-exports.getThreads = async (communityName) => {
+exports.getThreads = async (communityName, name, page, limit) => {
     try {
-        const communityThreads = await Community.findOne({ name: communityName }).select({ _id: 0, threads: 1 });
+        
+        const communityId = await Community.findOne({ name: communityName }).select({ _id: 1});
+        
+        if (!communityId)
+            throw new NotFoundError('Community Not Found');
+
+        let query = { community: communityId };
+        
+        if (name != '*')
+            query.name = { $regex: new RegExp(name, 'i') };
+        
+        const communityThreads = await Thread.find(query).skip((page - 1) * limit).limit(limit);
 
         if (!communityThreads)
             throw new NotFoundError('Not Found: Community not found');
