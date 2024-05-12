@@ -169,6 +169,28 @@ exports.getThreads = async (communityName, name, page, limit) => {
     }
 }
 
+exports.getThread = async (communityName, threadNameId) => {
+    try {
+        
+        const communityId = await Community.findOne({ name: communityName }).select({ _id: 1});
+        
+        if (!communityId)
+            throw new NotFoundError('Community Not Found');
+        
+        console.log(communityName, threadNameId)
+        const communityThread = await Thread.findOne({ community: communityId, nameId: threadNameId });
+
+        if (!communityThread)
+            throw new NotFoundError('Thread not found');
+
+        return communityThread;
+
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
+    }
+}
+
 /**
  * Validate if users exist by their username and return array of ids.
  * @param {string[]} usernames Arrays of users id

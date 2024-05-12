@@ -1,7 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/authMiddleware');
-const { createCommunity, getCommunities, getCommunity, putCommunityMembers, putJoinCommunity, getCommunityMembers, getCommunityThreads } = require('../../controllers/rest/communitiesController');
+const { 
+    createCommunity, 
+    getCommunities, 
+    getCommunity, 
+    putCommunityMembers, 
+    putJoinCommunity, 
+    getCommunityMembers, 
+    getCommunityThreads, 
+    getCommunityThread 
+} = require('../../controllers/rest/communitiesController');
 
 // Create community
 router.post('/', authMiddleware, createCommunity);
@@ -24,5 +33,8 @@ router.put('/:community/join', authMiddleware, putJoinCommunity);
 
 // Get Community Threads
 router.get('/:community/threads', getCommunityThreads);
+
+// Get Community Thread
+router.get('/:community/threads/:threadNameId', getCommunityThread);
 
 module.exports = router;

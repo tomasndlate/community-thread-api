@@ -132,3 +132,16 @@ exports.getCommunityThreads = async (req, res) => {
         sendErrorResponse(res, error.statusCode, error.message);
     }
 }
+
+exports.getCommunityThread = async (req, res) => {
+    try {
+        const { community, threadNameId } = req.params;
+
+        const communityThread = await communitiesService.getThread(community, threadNameId);
+
+        sendJsonResponse(res, HttpStatus.OK, communityThread);
+    } catch (error) {
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
+    }
+}
