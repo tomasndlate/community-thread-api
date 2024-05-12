@@ -99,9 +99,22 @@ exports.putJoinCommunity = async (req, res) => {
         const userId = req.user._id;
         const { community } = req.params;
 
-        const updatedCommunity = await communitiesService.addMember(userId, community)
+        const updatedCommunity = await communitiesService.addMember(userId, community);
         
         sendJsonResponse(res, HttpStatus.OK, updatedCommunity);
+    } catch (error) {
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
+    }
+}
+
+exports.getCommunityThreads = async (req, res) => {
+    try {
+        const { community } = req.params;
+
+        const communityThreads = await communitiesService.getThreads(community);
+
+        sendJsonResponse(res, HttpStatus.OK, communityThreads);
     } catch (error) {
         error = !error.statusCode ? new ServerError('Internal error.') : error;
         sendErrorResponse(res, error.statusCode, error.message);
