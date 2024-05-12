@@ -1,24 +1,34 @@
 const User = require('../models/User');
 const Community = require('../models/Community');
-// const { encryptPassword, comparePassword } = require('../utils/passwordUtils');
-// const AuthenticationError = require('../errors/AuthenticationError');
 const DatabaseError = require('../errors/DatabaseError');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const AuthorizationError = require('../errors/AuthorizationError');
 const mongoose = require('mongoose');
+const Thread = require('../models/Thread');
 
 exports.create = async (owner, name, description, members) => {
     try {
-        // const encryptedPassword = await encryptPassword(password);
+        
         const newCommunity = new Community({
             owner: owner, 
             name: name, 
             description: description, 
             members: members
         });
-        const createdNewCommunity = await newCommunity.save();
-        return createdNewCommunity;
+        await newCommunity.save();
+        
+        const defaultThread = new Thread({
+            community: newCommunity._id,
+            nameId: "general",
+            name: "General"
+        })
+        await defaultThread.save();
+
+        newCommunity.threads.push(defaultThread.nameId);
+        await newCommunity.save();
+        
+        return newCommunity;
 
     } catch (error) {
         // Duplicate key violation
