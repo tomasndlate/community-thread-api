@@ -99,9 +99,34 @@ exports.putJoinCommunity = async (req, res) => {
         const userId = req.user._id;
         const { community } = req.params;
 
-        const updatedCommunity = await communitiesService.addMember(userId, community)
+        const updatedCommunity = await communitiesService.addMember(userId, community);
         
         sendJsonResponse(res, HttpStatus.OK, updatedCommunity);
+    } catch (error) {
+        error = !error.statusCode ? new ServerError('Internal error.') : error;
+        sendErrorResponse(res, error.statusCode, error.message);
+    }
+}
+
+exports.getCommunityThreads = async (req, res) => {
+    try {
+        const { community } = req.params;
+        const { name = '*', page = 1, limit = 20 } = req.query;
+        
+        // TODO: Handle the name parameter for not allowed digits
+        const filterName = name;
+        const filterPage = parseInt(page);
+        const filterLimit = parseInt(limit);
+
+        if (isNaN(filterPage) || filterPage < 1)
+            throw new BadRequestError('Invalid page number');
+        
+        if (isNaN(filterLimit) || filterLimit < 1)
+            throw new BadRequestError('Invalid page size');
+
+        const communityThreads = await communitiesService.getThreads(community, filterName, filterPage, filterLimit);
+
+        sendJsonResponse(res, HttpStatus.OK, communityThreads);
     } catch (error) {
         error = !error.statusCode ? new ServerError('Internal error.') : error;
         sendErrorResponse(res, error.statusCode, error.message);

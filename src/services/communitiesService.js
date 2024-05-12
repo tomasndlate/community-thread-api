@@ -133,9 +133,35 @@ exports.getMembers = async (communityName) => {
         const communityMembers = await Community.findOne({ name: communityName }).select({ _id: 0, members: 1 });
 
         if (!communityMembers)
-            throw new NotFoundError('Not Found');
+            throw new NotFoundError('Not Found: Community not found');
 
         return communityMembers;
+
+    } catch (error) {
+        error = !error.statusCode ? new DatabaseError('Database error.') : error;
+        throw error;
+    }
+}
+
+exports.getThreads = async (communityName, name, page, limit) => {
+    try {
+        
+        const communityId = await Community.findOne({ name: communityName }).select({ _id: 1});
+        
+        if (!communityId)
+            throw new NotFoundError('Community Not Found');
+
+        let query = { community: communityId };
+        
+        if (name != '*')
+            query.name = { $regex: new RegExp(name, 'i') };
+        
+        const communityThreads = await Thread.find(query).skip((page - 1) * limit).limit(limit);
+
+        if (!communityThreads)
+            throw new NotFoundError('Not Found: Community not found');
+
+        return communityThreads;
 
     } catch (error) {
         error = !error.statusCode ? new DatabaseError('Database error.') : error;
