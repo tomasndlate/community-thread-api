@@ -7,7 +7,8 @@ const {
   setServersOpenAPI, 
   setTagsOpenAPI, 
   REQUEST_BODY,
-  SECURITY_SCHEME
+  SECURITY_SCHEME,
+  SCHEMA
 } = require('../openapi/openapi-builder');
 
 setOpenApiDefinition({
@@ -41,16 +42,33 @@ setTagsOpenAPI([
   {name:"", description:""}
 ]);
 
-// REQUEST_BODY('User', {
-//   description: "",
-//   required: true,
-//   content: createBodyContent([
-//     {
-//       contentType: "",
-//       type: "string"
-//     }
-//   ])
-// });
+// Log in and Sign up Schemas
+SCHEMA('LoginForm', {
+  required: ['username', 'password'],
+  type: 'object',
+  properties: {
+      email: { type: "string", example: "user@gmail.com" },
+      password: { type: "string", example: "userpassword2024" },
+  }
+})
+SCHEMA('SignupForm', {
+  required: ['username', 'password'],
+  type: 'object',
+  properties: {
+      email: { type: "string", example: "user@gmail.com" },
+      username: { type: "string", example: "user1234" },
+      password: { type: "string", example: "userpassword2024" },
+      name: { type: "string", example: "John Smith" },
+  }
+})
+SCHEMA('BearerToken', {
+  required: ['accessToken'],
+  type: 'object',
+  properties: {
+      accessToken : { type: "string", example: "hsuq82tw1kba19s9s1sl1si.ihgfufyf" },
+  }
+})
+
 
 SECURITY_SCHEME('BearerToken', {
   type: "http",
