@@ -18,8 +18,8 @@ router.post('/', authMiddleware, createCommunity);
 // Get all communities (optional params)
 router.get('/', getCommunities);
 
+// Get community by nameId
 // TODO: Change from name to nameID
-// Get community by name
 router.get('/:community', getCommunity);
 
 // Add members to a community

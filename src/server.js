@@ -5,6 +5,7 @@ require('dotenv').config();
 const mongodbConfig = require('./configs/mongodbConfig');
 const passportConfig = require('./configs/passportConfig');
 const { logger, expressLogger } = require('./configs/winstonConfig');
+const { initOpenAPI } = require('./configs/openapi.config');
 
 // Instance of express application
 const expressApp = express();
@@ -16,22 +17,29 @@ expressApp.use(expressLogger);
 mongodbConfig.connect();
 passportConfig.initialize();
 
-// REST Routes
+// Importing the models and documentation
+require('./models/User');
+require('./models/Community');
+require('./models/Thread');
+require('./models/Message');
+
+// Importing REST Routes and documentation
 expressApp.use('/auth', require('./routes/rest/authRoutes'));
 expressApp.use('/profile', require('./routes/rest/profileRoutes'));
 expressApp.use('/communities', require('./routes/rest/communitiesRoutes'));
-
-expressApp.post('/test', require('./configs/passportConfig').authenticate('jwt', { session: false }), (req, res) => {
-    res.status(201).json({"a": "b"})
-})
 
 // Instance of server using express application
 const restServer = http.createServer(expressApp);
 const websocketServer = require('./websocketServer');
 
-// Start the server
-websocketServer(restServer);
 const port = process.env.API_PORT;
 restServer.listen(port, () => {
+
+    // Open API Definition
+    initOpenAPI(expressApp, process.env.API_PORT);
+
+    // Start the server
+    websocketServer(restServer);
+
     logger.info(`Express Server running on http://localhost:${port}`);
 })
