@@ -2,18 +2,7 @@ const mongoose = require('mongoose');
 const BadRequestError = require('../errors/BadRequestError');
 const User = require('./User');
 const DatabaseError = require('../errors/DatabaseError');
-const { SCHEMA } = require('../openapi/openapi-builder');
 
-SCHEMA("Community",{
-        required: ["_id", "owner", "name", "threads", "members", "startDate"],
-        type: "object",
-        properties: {
-            _id: { type: "integer" },
-            name: { type: "string", example: "Big Team Community" },
-            description: { type: "string", example: "Join the team and help grow your potential" },
-            startDate: { type: "string", format: "date-time" }
-        }
-})
 const communitySchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,

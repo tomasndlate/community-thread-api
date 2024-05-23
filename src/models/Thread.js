@@ -1,23 +1,7 @@
 const mongoose = require('mongoose');
 const DatabaseError = require('../errors/DatabaseError');
 const BadRequestError = require('../errors/BadRequestError');
-const { SCHEMA } = require('../openapi/openapi-builder');
 
-SCHEMA( 
-    'Thread', 
-    {
-        required: ["_id"],
-        type: "object",
-        properties: {
-            _id: { type: "integer" },
-            community: { $ref: "#/components/schemas/Community/properties/_id" },
-            nameId: { type: "string" },
-            name: { type: "string" },
-            messages: { type: "array", $ref: "#/components/schemas/Message/properties/_id" },
-            startDate: { type: "integer" }
-        }
-    }
-)
 const threadSchema = new mongoose.Schema({
     community: {
         type: mongoose.Schema.Types.ObjectId,

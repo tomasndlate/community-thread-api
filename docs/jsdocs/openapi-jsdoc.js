@@ -1,3 +1,15 @@
+/** Open API Definition
+ * @typedef {Object} OpenApiDefinition
+ * @property {string} openapi
+ * @property {Info} info - {@link Info}
+ * @property {ExternalDocs} externalDocs - {@link ExternalDocs}
+ * @property {Server[]} servers - {@link Server}
+ * @property {Tag[]} tags - {@link Tag}
+ * @property {Paths} paths 
+ * @property {} paths.methodEnum- <{@link methodPathEnum}, {@link Path}>
+ * @property {Components} components - {@link Components}
+ */
+
 /** Info Structure for Open API Definition
  * @typedef {Object} Info
  * @property {string} title
@@ -31,6 +43,34 @@
  * @property {ExternalDocs} externalDocs - {@link ExternalDocs}
  */
 
+/** Paths for Open API Definition
+ * @typedef {Object<string,Methods>} Paths
+ */
+
+/**
+ * @typedef {Object} Methods
+ * @property {Method} get
+ * @property {Method} post
+ * @property {Method} put
+ * @property {Method} delete
+*/
+
+/** Path for Open API Definition
+ * @typedef {Object} Method
+ * @property {string} summary
+ * @property {string} description
+ * @property {string} operationId
+ * @property {string[]} tags
+ * @property {Parameter[]} parameters {@link Parameter}
+ * @property {RequestBody} requestBody {@link RequestBody}
+ * @property {Object<string, Response_OpenAPI>} responses - <'application/json', {@link Response_OpenAPI}>
+ * @property {SecurityScheme} [security] - {@link SecurityScheme}
+ */
+
+/**
+ * @typedef {string} ContentType - 200 | 201 | 400 | 500
+*/
+
 /** Parameter Structure for Path Definition
  * @typedef {Object} Parameter
  * @property {string} name
@@ -41,21 +81,6 @@
  * @property {string} [schema.$ref]
  * @property {string} [schema.type]
  * @property {string} [schema.format]
- */
-
-/** Path for Open API Definition
- * @typedef {Object} Path
- * @property {string} path
- * @property {string} summary
- * @property {string} description
- * @property {string} operationId
- * @property {string[]} tags
- * @property {Parameter[]} parameters {@link Parameter}
- * @property {RequestBody} requestBody {@link RequestBody}
- * @property {Object<responseTypeEnum, Response_OpenAPI>} responses - <{@link responseTypeEnum}, {@link Response_OpenAPI}>
- * @property {SecurityScheme} [security] - {@link SecurityScheme}
- */ /** 
- * @typedef {string} methodPathEnum - get | post | put | delete
  */
 
 /** Schema Structure for Components Definition
@@ -112,13 +137,3 @@
  * @property {Object<string,SecurityScheme>} securitySchemes - < SecurityScheme Name, {@link SecurityScheme}>
  */
 
-/** Open API Definition
- * @typedef {Object} OpenApiDefinition
- * @property {string} openapi
- * @property {Info} info - {@link Info}
- * @property {ExternalDocs} externalDocs - {@link ExternalDocs}
- * @property {Server[]} servers - {@link Server}
- * @property {Tag[]} tags - {@link Tag}
- * @property {Object<methodPathEnum,Path>} paths - <{@link methodPathEnum}, {@link Path}>
- * @property {Components} components - {@link Components}
- */
