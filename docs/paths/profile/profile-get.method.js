@@ -9,7 +9,7 @@ const profileGetMethod = {
             description: 'Ok', 
             content: { $ref: '#/components/schemas/User' }
         } },
-    // security: [ { BearerToken: [] } ]
+    security: [ { BearerToken: [] } ]
 }
 
 module.exports = {
