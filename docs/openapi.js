@@ -11,6 +11,8 @@ const { usersPath } = require("./paths/users.path");
 const { devServer } = require("./servers/dev.server");
 const { prodServer } = require("./servers/prod.server");
 const { authTag } = require("./tags/auth.tag");
+const { communitiesTag } = require('./tags/communities.tag');
+const { profileTag } = require('./tags/profile.tag');
 
 /**
  * @type {OpenApiDefinition} | {@link openApiDefinition}
@@ -36,7 +38,9 @@ const openApiDefinition = {
     prodServer
   ],
   tags: [
-    authTag
+    authTag,
+    profileTag,
+    communitiesTag,
   ],
   paths: {
     ...profilePath,
