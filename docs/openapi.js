@@ -1,10 +1,12 @@
 require('./jsdocs/openapi-jsdoc');
 const { AuthToken } = require("./components/schemas/AuthToken.schema");
 const { CommunitySchema } = require("./components/schemas/Community.schema");
+const { ErrorResponse } = require('./components/schemas/ErrorResponse.schema');
 const { MessageSchema } = require("./components/schemas/Message.schema");
 const { ThreadSchema } = require("./components/schemas/Thread.schema");
 const { UserSchema } = require("./components/schemas/User.schema");
 const { BearerToken } = require('./components/securitySchemes/BearerToken');
+const { authPath } = require('./paths/auth.path');
 const { communitiesPath } = require("./paths/communities.path");
 const { profilePath } = require("./paths/profile.path");
 const { usersPath } = require("./paths/users.path");
@@ -43,6 +45,7 @@ const openApiDefinition = {
     communitiesTag,
   ],
   paths: {
+    ...authPath,
     ...profilePath,
     ...communitiesPath,
     ...usersPath
@@ -53,7 +56,8 @@ const openApiDefinition = {
       Community: CommunitySchema,
       Thread: ThreadSchema,
       Message: MessageSchema,
-      AuthToken: AuthToken
+      AuthToken: AuthToken,
+      ErrorResponse: ErrorResponse
     },
     requestBodies: {},
     securitySchemes: {
