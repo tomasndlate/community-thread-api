@@ -1,4 +1,4 @@
-const httpStatus = require('../enums/httpStatusEnum');
+const httpStatus = require('../enums/responseCode.enum');
 
 class DatabaseError extends Error {
     constructor(message) {

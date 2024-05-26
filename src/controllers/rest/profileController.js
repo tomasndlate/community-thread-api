@@ -1,5 +1,5 @@
-const HttpStatus = require('../../enums/httpStatusEnum');
-const ServerError = require('../../errors/ServerError');
+const HttpStatus = require('../../enums/responseCode.enum');
+const ServerError = require('../../errors/InternalServer.error');
 const { sendErrorResponse, sendJsonResponse } = require('../../utils/responseUtils');
 
 exports.profile = (req, res) => {

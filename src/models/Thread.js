@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const DatabaseError = require('../errors/DatabaseError');
-const BadRequestError = require('../errors/BadRequestError');
+const BadRequestError = require('../errors/BadRequest.error');
 
 const threadSchema = new mongoose.Schema({
     community: {

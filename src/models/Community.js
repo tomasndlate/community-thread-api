@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const BadRequestError = require('../errors/BadRequestError');
+const BadRequestError = require('../errors/BadRequest.error');
 const User = require('./User');
 const DatabaseError = require('../errors/DatabaseError');
 
