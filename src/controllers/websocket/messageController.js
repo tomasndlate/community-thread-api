@@ -1,8 +1,8 @@
 const { default: mongoose } = require("mongoose");
 const NotFoundError = require("../../errors/NotFoundError");
-const ServerError = require("../../errors/ServerError");
+const ServerError = require("../../errors/InternalServer.error");
 const Thread = require("../../models/Thread");
-const BadRequestError = require("../../errors/BadRequestError");
+const BadRequestError = require("../../errors/BadRequest.error");
 const messageService = require("../../services/messageService");
 
 exports.sendMessage = async (io, socket, user, data) => {

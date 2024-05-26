@@ -1,6 +1,6 @@
-const HttpStatus = require('../../enums/httpStatusEnum');
-const BadRequestError = require('../../errors/BadRequestError');
-const ServerError = require('../../errors/ServerError');
+const HttpStatus = require('../../enums/responseCode.enum');
+const BadRequestError = require('../../errors/BadRequest.error');
+const ServerError = require('../../errors/InternalServer.error');
 const Community = require('../../models/Community');
 const communitiesService = require('../../services/communitiesService');
 const { sendErrorResponse, sendJsonResponse } = require('../../utils/responseUtils');

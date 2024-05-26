@@ -17,12 +17,6 @@ expressApp.use(expressLogger);
 mongodbConfig.connect();
 passportConfig.initialize();
 
-// Importing the models and documentation
-require('./models/User');
-require('./models/Community');
-require('./models/Thread');
-require('./models/Message');
-
 // Importing REST Routes and documentation
 expressApp.use('/auth', require('./routes/rest/authRoutes'));
 expressApp.use('/profile', require('./routes/rest/profileRoutes'));
