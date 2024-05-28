@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const AuthenticationError = require('../errors/AuthenticationError');
+const AuthenticationError = require('../errors/Unauthorized.error');
 
 exports.generateAuthToken = (userId) => {
     try {

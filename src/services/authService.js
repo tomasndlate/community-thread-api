@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const { encryptPassword } = require('../utils/passwordUtils');
-const AuthenticationError = require('../errors/AuthenticationError');
+const AuthenticationError = require('../errors/Unauthorized.error');
 const DatabaseError = require('../errors/DatabaseError');
 const { ConflictError } = require('../errors/Conflict.error');
 const ServerError = require('../errors/InternalServer.error');

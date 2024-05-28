@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const NotFoundError = require("../../errors/NotFoundError");
+const NotFoundError = require("../../errors/NotFound.error");
 const ServerError = require("../../errors/InternalServer.error");
 const Thread = require("../../models/Thread");
 const BadRequestError = require("../../errors/BadRequest.error");

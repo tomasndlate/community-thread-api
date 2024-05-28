@@ -3,40 +3,12 @@ const LocalStrategy = require('passport-local');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const User = require('../models/User');
 const { comparePassword } = require('../utils/passwordUtils');
-const AuthenticationError = require('../errors/AuthenticationError');
+const AuthenticationError = require('../errors/Unauthorized.error');
 const ServerError = require('../errors/InternalServer.error');
 const AuthorizationError = require('../errors/AuthorizationError');
-const NotFoundError = require('../errors/NotFoundError');
+const NotFoundError = require('../errors/NotFound.error');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-
-passport.use(new LocalStrategy({
-    // Passport expect username and passport from json
-    // To change the json variables to other credentials (eg. email & code)
-    usernameField: 'email', 
-    passwordField: 'password',
-    }, async (email, password, done) => {
-    try {
-        const user = await User.findOne({ email });
-
-        if(!user)
-            throw new AuthenticationError('Invalid username or password');
-        
-        if(!user.password)
-            throw new AuthenticationError('Other type of authentication required');
-
-        const isValidPassword = await comparePassword(password, user.password);
-        
-        if(!isValidPassword)
-            throw new AuthenticationError('Invalid username or password');
-        
-            done(null, user)
-        
-    } catch (error) {
-        error = !error.statusCode ? new ServerError('Internal error.') : error;
-        done(error, false);
-    }
-}));
 
 passport.use(new GoogleStrategy({
     // code executed in /auth/google

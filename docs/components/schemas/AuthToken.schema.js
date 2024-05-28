@@ -1,9 +1,9 @@
 const AuthToken = {
   required: [],
   type: 'object',
-  properties: [
-    {type: 'string'}
-  ]
+  properties: {
+    accessToken: { type: 'string', example: 'access-token-value'}
+  }
 }
 
 module.exports = {
