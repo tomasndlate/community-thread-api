@@ -56,7 +56,12 @@ const signup = async (req, res) => {
         const response = new CreatedResponse({
             message: 'User created',
             data: {
-                User: user,
+                User: {
+                    _id: user._id,
+                    email: user.email,
+                    username: user.username,
+                    name: user.name
+                },
                 AuthToken: {
                     accessToken: accessToken
                 }
@@ -74,7 +79,7 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     try {
         const email = req.body.email;
-        const password = req.body.passport;
+        const password = req.body.password;
 
         let detailsError = [];
 
@@ -88,7 +93,7 @@ const login = async (req, res) => {
             detailsError.push({
                 field: 'password',
                 errorCode: 'INVALID_PASSWORD_ERROR', 
-                message: 'Username not valid'
+                message: 'Password not valid'
             })
 
         if (!!detailsError.length)
@@ -114,6 +119,12 @@ const login = async (req, res) => {
         const response = new OkResponse({
             message: 'Successful log in',
             data: {
+                User: {
+                    _id: user._id,
+                    email: user.email,
+                    username: user.username,
+                    name: user.name
+                },
                 AuthToken: {
                     accessToken: accessToken
                 }
