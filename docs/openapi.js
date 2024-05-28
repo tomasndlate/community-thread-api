@@ -1,4 +1,4 @@
-require('./jsdocs/openapi-jsdoc');
+require('./openapi-jsdoc');
 const { AuthToken } = require("./components/schemas/AuthToken.schema");
 const { CommunitySchema } = require("./components/schemas/Community.schema");
 const { ErrorResponse } = require('./components/schemas/ErrorResponse.schema');

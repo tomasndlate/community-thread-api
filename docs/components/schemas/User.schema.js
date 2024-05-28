@@ -34,8 +34,18 @@ const UserApiRequest = {
   }
 }
 
+const UserLogInApiRequest = {
+  required: [ 'email', 'password' ],
+  type: 'object',
+  properties: {
+    email: { type: 'string', example: 'user@gmail.com' },
+    password: { type: 'string', example: 'example123'}
+  }
+}
+
 module.exports = {
   UserSchema,
   UserApiResponse,
-  UserApiRequest
+  UserApiRequest,
+  UserLogInApiRequest
 }

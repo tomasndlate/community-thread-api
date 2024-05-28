@@ -1,4 +1,4 @@
-const NotFoundError = require("../errors/NotFoundError");
+const NotFoundError = require("../errors/NotFound.error");
 const ServerError = require("../errors/InternalServer.error");
 const User = require("../models/User");
 const { validateAuthToken } = require("../utils/authTokenUtils");
